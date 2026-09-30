@@ -1,11 +1,32 @@
+import csv
+from operator import itemgetter
+
+
 def carica_da_file(file_path):
-    """Carica le foto dal file, creando un nuovo anno ogni volta che compare per la prima volta"""
-    # TODO
+    try:
+        with open(file_path) as file:
+            reader = list(csv.DictReader(file))
+        return reader
+    except FileNotFoundError:
+        return None
+
+
 
 
 def aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path):
-    """Aggiunge una foto all'album, creando l'anno al volo se non è ancora presente"""
-    # TODO
+   nuova_foto = {
+       "codice": codice,
+       "titolo": titolo,
+       "autore": autore,
+       "mese": mese,
+       "anno": anno,
+   }
+   album = album.append(nuova_foto)
+   riga_csv = ','.join(str(valore) for valore in nuova_foto.values())+ '\n'
+   with open(file_path, 'a', encoding="utf-8") as file:
+       file.write(riga_csv)
+   return True
+
 
 
 def cerca_foto(album, codice):
