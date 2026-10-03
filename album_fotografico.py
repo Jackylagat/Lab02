@@ -1,11 +1,10 @@
 import csv
-from operator import itemgetter
 
 
 def carica_da_file(file_path):
     try:
         with open(file_path) as file:
-            reader = list(csv.DictReader(file))
+            reader = list(csv.DictReader(file,skipinitialspace=True))
         return reader
     except FileNotFoundError:
         return None
@@ -21,22 +20,47 @@ def aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path):
        "mese": mese,
        "anno": anno,
    }
-   album = album.append(nuova_foto)
-   riga_csv = ','.join(str(valore) for valore in nuova_foto.values())+ '\n'
-   with open(file_path, 'a', encoding="utf-8") as file:
-       file.write(riga_csv)
-   return True
+
+   for canzone in album:
+       if canzone["codice"] == codice:
+           return None
+   if mese > 12 or mese < 1:
+       return None
+
+   else:
+       album.append(nuova_foto)
+       riga_csv = ','.join(str(valore) for valore in nuova_foto.values())+ '\n'
+       try:
+           with open(file_path, 'a', encoding="utf-8") as file:
+               file.write(riga_csv)
+           return True
+       except FileNotFoundError:
+           return None
 
 
 
 def cerca_foto(album, codice):
-    """Cerca una foto nell'album dato il codice"""
-    # TODO
+    for canzone in album:
+        if canzone["codice"] == codice:
+            risultato = ', '.join(str(v) for v in canzone.values())
+            return risultato
+    return None
+
+
 
 
 def elenco_foto_anno_per_titolo(album, anno):
-    """Ordina i titoli delle foto di un dato anno in ordine alfabetico"""
-    # TODO
+    lista_foto = []
+
+    for foto in album:
+        if foto['anno'] == str(anno):
+            lista_foto.append(foto['titolo'])
+
+    lista_foto.sort()
+    if lista_foto:
+        return lista_foto
+    else:
+        return None
 
 
 def main():
@@ -120,3 +144,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
