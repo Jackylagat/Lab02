@@ -1,6 +1,5 @@
 import csv
 
-
 def carica_da_file(file_path):
     try:
         with open(file_path) as file:
@@ -38,14 +37,12 @@ def aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path):
            return None
 
 
-
 def cerca_foto(album, codice):
     for canzone in album:
         if canzone["codice"] == codice:
             risultato = ', '.join(str(v) for v in canzone.values())
             return risultato
     return None
-
 
 
 
